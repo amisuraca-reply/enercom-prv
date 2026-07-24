@@ -27,6 +27,11 @@ app.http('login', {
             // Simuliamo la risposta reale che ti darà l'IAM del cliente:
             return {
                 status: 200,
+                headers: {
+                    'Access-Control-Allow-Origin': '*', // Autorizza lo smartphone a leggere la risposta
+                    'Access-Control-Allow-Methods': 'POST, GET, OPTIONS',
+                    'Access-Control-Allow-Headers': 'Content-Type, Authorization'
+                },
                 jsonBody: {
                     success: true,
                     // Token valido con scadenza fittizia impostata nel futuro lontanissimo
