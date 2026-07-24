@@ -1,0 +1,28 @@
+{
+  "expo": {
+    "name": "AzurePortalNative",
+    "slug": "azure-portal-native",
+    "version": "1.0.0",
+    "orientation": "portrait",
+
+    "userInterfaceStyle": "light",
+    "splash": {
+      "resizeMode": "contain",
+      "backgroundColor": "#0078d4"
+    },
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "ios": {
+      "supportsTablet": true
+    },
+    "android": {
+      "adaptiveIcon": {
+        "backgroundColor": "#0078d4"
+      }
+    },
+    "web": {
+      
+    }
+  }
+}

@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { Platform } from 'react-native';
 
 
 export default function Login({ onLoginSuccess }) {
@@ -9,12 +10,18 @@ export default function Login({ onLoginSuccess }) {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
 
+  // Se siamo sul web usa l'URL relativo, se siamo sul telefono punta allo Staging di Azure
+  const BASE_URL = Platform.OS === 'web' 
+    ? '' 
+    : 'https://calm-river-02374e60f-versionenative.eastus2.7.azurestaticapps.net/';
+  
+
   const handlePressLogin = async () => {
     setLoading(true);
     setError('');
 
     try {
-      const response = await fetch('/api/login', {
+      const response = await fetch(`${baseUrl}/api/login`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ username, password })

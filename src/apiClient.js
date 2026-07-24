@@ -1,4 +1,11 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { Platform } from 'react-native';
+
+// Se siamo sul web usa l'URL relativo, se siamo sul telefono punta allo Staging di Azure
+const BASE_URL = Platform.OS === 'web' 
+  ? '' 
+  : 'https://calm-river-02374e60f-versionenative.eastus2.7.azurestaticapps.net/';
+
 
 // Funzione di utilità per decodificare la scadenza di un JWT (senza librerie esterne)
 const isTokenExpired = (token) => {
@@ -23,7 +30,7 @@ const isTokenExpired = (token) => {
 export const secureFetch = async (url, options = {}) => {
   let accessToken = await AsyncStorage.getItem('access_token');
 
-  // CONTROLLO MAGICO: L'Access Token è scaduto o manca?
+  // L'Access Token è scaduto o manca?
   if (!accessToken || isTokenExpired(accessToken)) {
     console.log("Access Token scaduto o mancante. Tento il refresh automatico...");
     const refreshToken = await AsyncStorage.getItem('refresh_token');
@@ -31,7 +38,7 @@ export const secureFetch = async (url, options = {}) => {
     if (refreshToken) {
       try {
         // Chiediamo ad Azure un nuovo token in background
-        const res = await fetch('/api/refresh', {
+        const res = await fetch(`${BASE_URL}/api/refresh`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ refreshToken })
@@ -48,7 +55,9 @@ export const secureFetch = async (url, options = {}) => {
         } else {
           // Se il refresh fallisce, sessione distrutta (l'utente dovrà rifare il login)
           await AsyncStorage.multiRemove(['access_token', 'refresh_token']);
-          window.location.reload(); // Forziamo il riavvio per mostrare il Login
+          if (Platform.OS === 'web') {
+            window.location.reload();
+          } // Forziamo il riavvio per mostrare il Login
           throw new Error("Sessione scaduta definitivamente.");
         }
       } catch (err) {
@@ -67,5 +76,5 @@ export const secureFetch = async (url, options = {}) => {
     }
   };
 
-  return fetch(url, secureOptions);
+  return fetch(`${BASE_URL}${url}`, secureOptions);
 };
