@@ -42,7 +42,7 @@ export default function Home() {
       
       {contenuti?.mostraTabellaAziende && (
         <View style={styles.alertBox}>
-          <Text style={styles.alertText}>💡 Avviso del CMS: La sezione aziende partner è attiva e accessibile dal menu superiore.</Text>
+          <Text style={styles.alertText}>💡 CMS operativo e raggiungibile</Text>
         </View>
       )}
     </View>
