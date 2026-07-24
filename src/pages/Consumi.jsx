@@ -3,6 +3,7 @@ import { View, Text, StyleSheet, ScrollView, ActivityIndicator, useWindowDimensi
 import { VictoryBar, VictoryChart, VictoryTheme, VictoryAxis, VictoryGroup, VictoryLegend } from 'victory-native';
 import { Picker } from '@react-native-picker/picker'; // <-- Importiamo il selettore universale
 import { secureFetch } from '../apiClient';
+import { Platform } from 'react-native';
 
 export default function Consumi() {
   const [storico, setStorico] = useState([]);
@@ -72,10 +73,17 @@ export default function Consumi() {
       <View style={styles.filterContainer}>
         <Text style={styles.filterLabel}>Seleziona Periodo:</Text>
         <View style={styles.pickerWrapper}>
-          <Picker selectedValue={annoSelezionato} onValueChange={(v) => setAnnoSelezionato(v)} style={styles.picker}>
-            <Picker.Item label="📊 Confronto Anni (2025 vs 2026)" value="confronto" />
-            <Picker.Item label="Calendario Annuale 2025" value="2025" />
-            <Picker.Item label="Calendario Annuale 2026" value="2026" />
+          <Picker
+            selectedValue={annoSelezionato}
+            onValueChange={(itemValue) => setAnnoSelezionato(itemValue)}
+            style={styles.picker}
+            dropdownIconColor="#0078d4" // Forza il colore della freccetta su Android
+            itemStyle={styles.pickerItemIos} // Applica l'altezza fissa specifica solo per iOS
+          >
+            {/* Su mobile forziamo il colore nero/grigio scuro su OGNI singolo elemento per evitare la DarkMode invisibile */}
+            <Picker.Item label="📊 Confronto Anni (2025 vs 2026)" value="confronto" color="#333" />
+            <Picker.Item label="Calendario Annuale 2025" value="2025" color="#333" />
+            <Picker.Item label="Calendario Annuale 2026" value="2026" color="#333" />
           </Picker>
         </View>
       </View>
@@ -128,10 +136,45 @@ const styles = StyleSheet.create({
   container: { padding: 15, backgroundColor: '#f4f4f9' },
   title: { fontSize: 20, fontWeight: 'bold', color: '#333' },
   subtitle: { fontSize: 13, color: '#666', marginBottom: 15 },
-  filterContainer: { marginBottom: 15, backgroundColor: '#fff', padding: 12, borderRadius: 8, borderWidth: 1, borderColor: '#ddd' },
-  filterLabel: { fontSize: 13, fontWeight: '600', color: '#444', marginBottom: 6 },
-  pickerWrapper: { borderWidth: 1, borderColor: '#ccc', borderRadius: 6, backgroundColor: '#fafafa', overflow: 'hidden' },
-  picker: { height: 40, width: '100%', fontSize: 14 },
+  filterContainer: { 
+    marginBottom: 15, 
+    backgroundColor: '#fff', 
+    padding: 12, 
+    borderRadius: 8, 
+    borderWidth: 1, 
+    borderColor: '#ddd' 
+  },
+  filterLabel: { 
+    fontSize: 13, 
+    fontWeight: '600', 
+    color: '#444', 
+    marginBottom: 6 
+  },
+  pickerWrapper: { 
+    borderWidth: 1, 
+    borderColor: '#ccc', 
+    borderRadius: 6, 
+    backgroundColor: '#fafafa', 
+    overflow: 'hidden',
+    // Il contenitore web ha altezza fissa, il mobile deve lasciare espandere il motore nativo
+    height: Platform.OS === 'web' ? 40 : undefined,
+    justifyContent: 'center'
+  },
+  picker: { 
+    width: '100%', 
+    // VINCOLO STRUTTURALE: Forziamo l'altezza minima sul web e su Android per non farlo collassare
+    ...Platform.select({
+      web: { height: 40, color: '#333', cursor: 'pointer' },
+      android: { height: 50, color: '#333' },
+      ios: { width: '100%' } // iOS si autogestisce tramite itemStyle
+    })
+  },
+  // Stile speciale extra da aggiungere sotto per la ruota nativa di iPhone
+  pickerItemIos: {
+    fontSize: 16,
+    height: 120, // La ruota di selezione iOS richiede uno spazio verticale dedicato
+    color: '#333'
+  },
   chartContainer: { backgroundColor: '#fff', paddingVertical: 10, paddingHorizontal: 5, borderRadius: 8, borderWidth: 1, borderColor: '#ddd', alignItems: 'center', marginBottom: 20 },
   sectionTitle: { fontSize: 16, fontWeight: 'bold', color: '#333', marginBottom: 12 },
   
