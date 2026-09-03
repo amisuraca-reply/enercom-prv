@@ -19,14 +19,16 @@ app.http('getConsumi', {
                 { mese: "Ott", anno: 2025, kwh: 220 },
                 { mese: "Nov", anno: 2025, kwh: 270 },
                 { mese: "Dic", anno: 2025, kwh: 340 },
-                // DATI NUOVI 2026 (Fino a Luglio corrente)
+                // DATI NUOVI 2026 (Fino a Settembre corrente)
                 { mese: "Gen", anno: 2026, kwh: 340 }, // +20
                 { mese: "Feb", anno: 2026, kwh: 275 }, // -15
                 { mese: "Mar", anno: 2026, kwh: 260 }, // +10
                 { mese: "Apr", anno: 2026, kwh: 165 }, // -15
                 { mese: "Mag", anno: 2026, kwh: 170 }, // +20
                 { mese: "Giu", anno: 2026, kwh: 230 }, // +20
-                { mese: "Lug", anno: 2026, kwh: 295 }  // +15
+                { mese: "Lug", anno: 2026, kwh: 295 },  // +15
+                { mese: "Ago", anno: 2026, kwh: 230 }, // -70
+                { mese: "Set", anno: 2026, kwh: 100 }  // -140
             ];
 
             return { 
