@@ -1,0 +1,13 @@
+{
+  "IsEncrypted": false,
+  "Values": {
+    "FUNCTIONS_WORKER_RUNTIME": "node",
+    "AzureWebJobsStorage": "",
+    "MIDDLEWARE_BASE_URL": "https://jsonplaceholder.typicode.com",
+    "MIDDLEWARE_API_TOKEN": "99999ddd3eewe33342115",
+    "IAM_AUTH_URL": "https://jsonplaceholder.typicode.com/posts",
+    "SANITY_PROJECT_ID": "abcde123",
+    "SANITY_DATASET": "production",
+    "SANITY_API_TOKEN": "sanity_secret_token_xyz987..."
+  }
+}

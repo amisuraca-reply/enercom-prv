@@ -4,12 +4,12 @@ on:
   push:
     branches:
       - main
-      - versione-native
+      - dev
   pull_request:
     types: [opened, synchronize, reopened, closed]
     branches:
       - main
-
+      - dev #Attiva il deploy anche quando qualcuno apre/aggiorna una PR verso dev
 jobs:
   build_and_deploy_job:
     if: github.event_name == 'push' || (github.event_name == 'pull_request' && github.event.action != 'closed')
